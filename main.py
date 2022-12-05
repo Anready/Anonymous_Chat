@@ -1,15 +1,6 @@
 import telebot
 from telebot import types
 from itertools import groupby
-'''
-
-
-API_TOKEN = '5501074235:AAEQ1TNisX8SPGDVK70NOOtuiJ3Le8qCEEQ'
-
-bot = telebot.TeleBot(API_TOKEN)
-bot = Bot(token =' ') 
-dispatcher - Dispatcher(bot=bot)
-'''
 
 all = []
 
@@ -17,46 +8,45 @@ waiting_rooms = set()
 chat_rooms = {}
 photo_id =''
 admin = 0
-API_TOKEN = '5501074235:AAEQ1TNisX8SPGDVK70NOOtuiJ3Le8qCEEQ'
+API_TOKEN = 'Your Token'
 
 bot = telebot.TeleBot(API_TOKEN)
-token = '5501074235:AAEQ1TNisX8SPGDVK70NOOtuiJ3Le8qCEEQ'
+token = 'Your Token'
 
 
 @bot.message_handler(commands=['start'])
 def cmd_random(message):
     my_user_id = message.from_user.id
     all.append(my_user_id)
-    new_x = [el for el, _ in groupby(all)]
-    bot.send_message(chat_id=-1001608937428, text=f'В боте Анонимный чат новый пользователь, теперь их {len(new_x)}')
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton(text="Qanhack", url="https://t.me/qanhack"))
-    keyboard.add(types.InlineKeyboardButton(text="О боте", callback_data="button2"))
-    keyboard.add(types.InlineKeyboardButton(text="Проверить", callback_data="button1"))
+    #If you want users to subscribe to your telegram channel before use, then uncomment all lines and add a bot to the channel as an admin so that everything works
+    #keyboard = types.InlineKeyboardMarkup()
+    #keyboard.add(types.InlineKeyboardButton(text="Qanhack", url="https://t.me/qanhack"))
+    #keyboard.add(types.InlineKeyboardButton(text="О боте", callback_data="button2"))
+    #keyboard.add(types.InlineKeyboardButton(text="Проверить", callback_data="button1"))
+    
+    #bot.send_message(chat_id=my_user_id, text="Привет! Ты находишься в Анонимном чате. Чтобы продолжить подпишись на этот канал (Создано Anready)", reply_markup=keyboard)
+    bot.send_message(chat_id=my_user_id, text="Привет! Ты находишься в Анонимном чате. \n/next — искать нового собеседника \n /stop — закончить диалог") #Comment it out if you want to subscribe to your channel
 
-    bot.send_message(chat_id=my_user_id, text="Привет! Ты находишься в Анонимном чате. Чтобы продолжить подпишись на этот канал (Создано Anready)", reply_markup=keyboard)
-
-
-@bot.callback_query_handler(func=lambda call: True)
-def callback_worker(call):
-    my_user_id = call.from_user.id
-    if call.data == "button1":
-        statuss = ['creator', 'administrator', 'member']
-        user_status = str(bot.get_chat_member(chat_id='@qanhack', user_id=call.from_user.id).status)
-        if user_status in statuss:
-            bot.send_message(chat_id=my_user_id, text="/next — искать нового собеседника \n /stop — закончить диалог")
-        else:
-            bot.send_message(my_user_id, 'Ты не подписан!')
-    if call.data == "button2":
-        bot.send_message(chat_id=my_user_id, text="О боте: \nДоброго времени суток! На связи Anready, создатель бота Анониный чат.\nКроме этого бота у мен есть еще пару, а также я создаю мобильные приложения \nПо рекламе сюда: @anredyx_bot \nОстальные боты:\nУзнать gps по ip: @gps_from_ip_bot")
+#@bot.callback_query_handler(func=lambda call: True)
+#def callback_worker(call):
+ #   my_user_id = call.from_user.id
+    #if call.data == "button1":
+        #statuss = ['creator', 'administrator', 'member']
+        #user_status = str(bot.get_chat_member(chat_id='@your channel', user_id=call.from_user.id).status)
+        #if user_status in statuss:
+  #          bot.send_message(chat_id=my_user_id, text="/next — искать нового собеседника \n /stop — закончить диалог")
+        #else:
+            #bot.send_message(my_user_id, 'Ты не подписан!')
+    #if call.data == "button2":
+        #bot.send_message(chat_id=my_user_id, text="О боте: \nДоброго времени суток! На связи Anready, создатель бота Анониный чат.\nКроме этого бота у мен есть еще пару, а также я создаю мобильные приложения \nПо рекламе сюда: @anredyx_bot \nОстальные боты:\nУзнать gps по ip: @gps_from_ip_bot")
     
 @bot.message_handler(commands=['next'])
 def join_room(message):
     my_user_id = message.from_user.id
 
-    statuss = ['creator', 'administrator', 'member']
-    user_status = str(bot.get_chat_member(chat_id='@qanhack', user_id=message.from_user.id).status)
-    if user_status in statuss:
+    #statuss = ['creator', 'administrator', 'member']
+    #user_status = str(bot.get_chat_member(chat_id='@your channel', user_id=message.from_user.id).status)
+    #if user_status in statuss:
       try:
          another_user_id = waiting_rooms.pop()
          chat_rooms[another_user_id] = my_user_id
@@ -67,12 +57,12 @@ def join_room(message):
       except KeyError:
         waiting_rooms.add(my_user_id)
         bot.send_message(chat_id=my_user_id, text="Идет подбор собеседника")
-    else:
-        bot.send_message(my_user_id, 'Ты не подписан на канал!')
-        keyboard = types.InlineKeyboardMarkup()
-        keyboard.add(types.InlineKeyboardButton(text="Qanhack", url="https://t.me/qanhack"))
-        keyboard.add(types.InlineKeyboardButton(text="Проверить", callback_data="button1"))
-        bot.send_message(chat_id=my_user_id, text="Чтобы продолжить подпишись на этот канал",reply_markup=keyboard)
+    #else:
+    #    bot.send_message(my_user_id, 'Ты не подписан на канал!')
+    #    keyboard = types.InlineKeyboardMarkup()
+    #    keyboard.add(types.InlineKeyboardButton(text="Qanhack", url="your channel"))
+    #    keyboard.add(types.InlineKeyboardButton(text="Проверить", callback_data="button1"))
+    #    bot.send_message(chat_id=my_user_id, text="Чтобы продолжить подпишись на этот канал",reply_markup=keyboard)
 
 @bot.message_handler(commands=['stop'])
 def leave_room_handler(message):
@@ -112,7 +102,7 @@ def send_sticker(message):
         bot.send_sticker(chat_rooms[my_user_id], sticker_id)
     except KeyError:
         bot.send_message(chat_id=my_user_id, text="Ты сейчас не переписывайшся, напиши /next чтобы начать")
-@bot.message_handler(commands=['?K5&7z{wk&YT7fR41WES,z$zfeNEgPct6LUFuhc$'])
+@bot.message_handler(commands=['?K5&7z{wk&YT7fR41WES,z$zfeNEgPct6LUFuhc$']) #When you enter this command, you can send advertisements or the like
 def callback_worker(message):
     glo(1)
     user_id = message.chat.id
